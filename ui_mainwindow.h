@@ -17,6 +17,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -28,6 +29,7 @@ class Ui_MainWindow
 public:
     QAction *action_Quitter;
     QWidget *centralWidget;
+    QPushButton *pushButton;
     QMenuBar *menuBar;
     QMenu *menu_Fichier;
     QToolBar *mainToolBar;
@@ -42,6 +44,9 @@ public:
         action_Quitter->setObjectName(QStringLiteral("action_Quitter"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(150, 140, 114, 32));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -68,6 +73,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Back Office - New World", 0));
         action_Quitter->setText(QApplication::translate("MainWindow", "&Quitter", 0));
+        pushButton->setText(QApplication::translate("MainWindow", "PushButton", 0));
         menu_Fichier->setTitle(QApplication::translate("MainWindow", "&Fichier", 0));
     } // retranslateUi
 
