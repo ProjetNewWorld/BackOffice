@@ -16,3 +16,5 @@ BackOfficeCourses.app/Contents/Info.plist
 .qmake.stash
 
 Makefile
+
+mainwindow.ui.autosave
