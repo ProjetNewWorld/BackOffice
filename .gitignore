@@ -18,3 +18,5 @@ BackOfficeCourses.app/Contents/Info.plist
 Makefile
 
 mainwindow.ui.autosave
+
+*.autosave
