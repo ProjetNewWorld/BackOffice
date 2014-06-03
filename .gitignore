@@ -20,3 +20,11 @@ Makefile
 mainwindow.ui.autosave
 
 *.autosave
+
+*.lproj
+
+*.plist
+
+Backoffice-Nicolas-LDC/Backoffice-Nicolas-LDC.app/Contents/MacOS/Backoffice-Nicolas-LDC
+
+Backoffice-Nicolas-LDC/Backoffice-Nicolas-LDC.app/Contents/PkgInfo
