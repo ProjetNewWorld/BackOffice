@@ -12,7 +12,7 @@ Permet de :
 - ``créer``
 - ``modifier``
 - ``supprimer``
-- 
+
 un ``rayon``, ansi qu'un ``produit``.
 
 Dépendances
