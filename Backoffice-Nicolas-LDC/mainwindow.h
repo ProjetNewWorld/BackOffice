@@ -23,8 +23,8 @@ public:
     void chargerComboBoxRayons();
 private slots:
     void on_action_Quitter_triggered();
-    void on_listWidgetProduits_currentItemChanged();
-    void on_listWidgetRayons_currentItemChanged();
+    void on_listWidgetProduits_currentRowChanged();
+    void on_listWidgetRayons_currentRowChanged();
     void on_pushButtonProduitsAnnuler_clicked();
     void on_pushButtonRayonsAnnuler_clicked();
     void on_pushButtonRayonsModifier_clicked();
@@ -36,7 +36,7 @@ private slots:
     void on_pushButtonProduitsSupprimer_clicked();
     void on_comboBoxProduitsRayons_currentIndexChanged();
     void on_lineEditRechercheProduits_textChanged();
-    void on_lineEditProduits_textChanged();
+    void on_lineEditProduits_textChanged();    
 
 private:
     Ui::MainWindow *ui;

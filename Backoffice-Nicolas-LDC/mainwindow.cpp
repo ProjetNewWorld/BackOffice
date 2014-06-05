@@ -10,7 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->setupUi(this);
         chargerListWidgetRayons();
         chargerListWidgetProduits();
-        chargerComboBoxRayons();
     }
     else // sinon on affiche un message d'erreur
     {
@@ -54,6 +53,7 @@ void MainWindow::on_action_Quitter_triggered()
 void MainWindow::chargerComboBoxRayons()
 {
     ui->comboBoxProduitsRayons->clear();
+    ui->comboBoxProduitsRayons->addItem("Selectionnez un rayon");
     QSqlQuery req("select rayonLib from rayon");
     while(req.next())
     {
@@ -67,6 +67,7 @@ void MainWindow::chargerComboBoxRayons()
 void MainWindow::chargerListWidgetRayons()
 {
     ui->listWidgetRayons->clear();
+    ui->lineEditRayons->clear();
     vectorRayons.clear();
     int i=0;
     QSqlQuery req("select rayonId, rayonLib from rayon order by rayonLib");
@@ -83,7 +84,7 @@ void MainWindow::chargerListWidgetRayons()
     }
 }
 
-void MainWindow::on_listWidgetRayons_currentItemChanged()
+void MainWindow::on_listWidgetRayons_currentRowChanged()
 {
     ui->lineEditRayons->setText(ui->listWidgetRayons->currentItem()->text());
     ui->pushButtonRayonsModifier->setEnabled(true);
@@ -105,6 +106,7 @@ void MainWindow::on_pushButtonRayonsAnnuler_clicked()
 
 void MainWindow::chargerListWidgetProduits(){
     ui->listWidgetProduits->clear();
+    chargerComboBoxRayons();
     vectorRayonsProduits.clear();
     vectorPositionInListOfRayon.clear();
     int i=0;
@@ -144,7 +146,7 @@ QString MainWindow::getRayonByProduit(QString idProd)
     }
 }
 
-void MainWindow::on_listWidgetProduits_currentItemChanged()
+void MainWindow::on_listWidgetProduits_currentRowChanged()
 {
     bool produit=true;
     for(int i=0;i<vectorPositionInListOfRayon.size();i++)
@@ -251,8 +253,14 @@ void MainWindow::on_pushButtonProduitsAjouter_clicked()
     ui->pushButtonProduitsModifier->setEnabled(false);
     ui->pushButtonProduitsAnnuler->setEnabled(false);
     ui->pushButtonProduitsAjouter->setEnabled(false);
+    //déconnecte
+    ui->listWidgetProduits->disconnect();
     //charge la nouvelle liste de produits
-    //perd la selection
+    chargerListWidgetProduits();
+    //reconnecte
+    connect(ui->listWidgetProduits,SIGNAL(currentRowChanged()),this,SLOT(on_lineEditProduits_textChanged()));
+    connect(ui->listWidgetProduits,SIGNAL(currentRowChanged()),this,SLOT(on_comboBoxProduitsRayons_currentIndexChanged()));
+    //perd la selection de la combobox
 }
 
 void MainWindow::on_pushButtonProduitsAnnuler_clicked()
