@@ -1,6 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
+
+/**
+ * @brief MainWindow::MainWindow
+ * @param parent
+ * Constructeur de la MainWindow
+ * Effectue la connexion à la base de données, si tout c'est bien passé crée l'ui et charge les pages rayons et produits
+ * Si la connexion est à la base de données n'est pas possible affiche un message d'erreur
+ */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -8,14 +16,19 @@ MainWindow::MainWindow(QWidget *parent) :
     if(connectBase()) // si la connexion c'est bien passé
     {
         ui->setupUi(this);
-        chargerListWidgetRayons();
-        chargerListWidgetProduits();
+        this->chargerListWidgetRayons();
+        this->chargerListWidgetProduits();
     }
     else // sinon on affiche un message d'erreur
     {
         QMessageBox::critical(this,"Erreur critique", "Impossible d'ouvrir la base de données.");
     }
 }
+
+/**
+ * @brief MainWindow::~MainWindow
+ * Destructeur de la MainWindow
+ */
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -25,35 +38,48 @@ MainWindow::~MainWindow()
 // ****************** Base de données **********************
 /**
  * @brief MainWindow::connectBase , permet la connexion a la base de données
- * @return true si la connexion à la base à marché , retourne false sinon
+ * @return TRUE si la connexion à la base à marché , retourne FALSE sinon
  */
 bool MainWindow::connectBase()
 {
+    //varibles contenant l'hote, le nom, le mot de passe, le nom de la base de données
     QString hote="127.0.0.1";
     QString name="userLDC";
     QString pass="passLDC";
     QString bdd="listedescourses";
-
+    //connexion à la base de données avec les variables
     listedescourses=QSqlDatabase::addDatabase("QMYSQL");
     listedescourses.setHostName(hote);
     listedescourses.setPassword(pass);
     listedescourses.setUserName(name);
     listedescourses.setDatabaseName(bdd);
+    //connexion
     return listedescourses.open();
 }
 
 // *********************************************************
 // *********************** Commun **************************
-
+/**
+ * @brief MainWindow::on_action_Quitter_triggered
+ * Ferme l'application
+ */
 void MainWindow::on_action_Quitter_triggered()
 {
     this->close();
 }
 
+/**
+ * @brief MainWindow::chargerComboBoxRayons
+ * Vide la combobox : comboBoxProduitsRayons
+ * Charger la combobox : comboBoxProduitsRayons
+ */
 void MainWindow::chargerComboBoxRayons()
 {
+    //vide la combo box
     ui->comboBoxProduitsRayons->clear();
+    //ajoute une valeur selectionnez un rayon
     ui->comboBoxProduitsRayons->addItem("Selectionnez un rayon");
+    //requete de selection sur le libellé des rayons
     QSqlQuery req("select rayonLib from rayon");
     while(req.next())
     {
@@ -63,13 +89,18 @@ void MainWindow::chargerComboBoxRayons()
 
 // *********************************************************
 // *********************** Rayons **************************
-
+/**
+ * @brief MainWindow::chargerListWidgetRayons
+ * Vide la listWidgetRayons, la lineEditRayons, le vectorRayons
+ */
 void MainWindow::chargerListWidgetRayons()
 {
+    //Vide la listWidgetRayons, la lineEditRayons, le vectorRayons
     ui->listWidgetRayons->clear();
     ui->lineEditRayons->clear();
     vectorRayons.clear();
     int i=0;
+    //requete pour récupérer l'id et le lib des rayons
     QSqlQuery req("select rayonId, rayonLib from rayon order by rayonLib");
     while(req.next())
     {
@@ -78,39 +109,88 @@ void MainWindow::chargerListWidgetRayons()
         ui->listWidgetRayons->addItem(item);
         vectorRayons.push_back(req.value(0).toString());
     }
-    if(i==0)
+    if(i==0)//s'il n'y a pas de rayons
     {
         ui->listWidgetRayons->addItem("Pas de rayon");
     }
 }
 
-void MainWindow::on_listWidgetRayons_currentRowChanged()
+/**
+ * @brief MainWindow::chargePageRayons
+ * Vide le champ : lineEditRayons
+ * Recharge la liste des rayons
+ * Passe tous les boutons de la page rayons a enable false
+ */
+void MainWindow::chargePageRayons()
 {
+    //vide le champ
+    ui->lineEditRayons->clear();
+    //recharge la liste des rayons
+    this->chargerListWidgetRayons();
+    //passe tous les boutons de la page rayons a enable false
+    ui->pushButtonRayonsSupprimer->setEnabled(false);
+    ui->pushButtonRayonsModifier->setEnabled(false);
+    ui->pushButtonRayonsAnnuler->setEnabled(false);
+    ui->pushButtonRayonsAjouter->setEnabled(false);
+}
+
+/**
+ * @brief MainWindow::on_listWidgetRayons_clicked
+ * Rempli lineEditRayons avec ce qui a été cliqué dans la listWidgetRayons
+ * Passe les boutons modifier, supprimer, annuler, ajouter à TRUE
+ */
+void MainWindow::on_listWidgetRayons_clicked()
+{
+    //rempli lineEditRayons avec ce qui a été cliqué
     ui->lineEditRayons->setText(ui->listWidgetRayons->currentItem()->text());
+    //Passe les boutons modifier, supprimer, annuler, ajouter à TRUE
     ui->pushButtonRayonsModifier->setEnabled(true);
     ui->pushButtonRayonsSupprimer->setEnabled(true);
     ui->pushButtonRayonsAnnuler->setEnabled(true);
+    ui->pushButtonRayonsAjouter->setEnabled(true);
 }
 
+/**
+ * @brief MainWindow::on_lineEditRayons_textChanged
+ * Quand le texte a été changé passe le bouton annuler et ajouter a TRUE
+ */
+void MainWindow::on_lineEditRayons_textChanged()
+{
+    //quand le texte a été changé passe le bouton annuler et ajouter a true
+    ui->pushButtonRayonsAnnuler->setEnabled(true);
+    ui->pushButtonRayonsAjouter->setEnabled(true);
+}
+
+/**
+ * @brief MainWindow::on_pushButtonRayonsAnnuler_clicked
+ * Recharge la page rayon
+ */
 void MainWindow::on_pushButtonRayonsAnnuler_clicked()
 {
-    ui->lineEditRayons->clear();
-    ui->pushButtonRayonsAjouter->setEnabled(false);
-    ui->pushButtonRayonsAnnuler->setEnabled(false);
-    ui->pushButtonRayonsSupprimer->setEnabled(false);
-    ui->pushButtonRayonsModifier->setEnabled(false);
+    //recharge la page rayon
+    this->chargePageRayons();
 }
 
 // *********************************************************
 // ********************** Produits *************************
-
+/**
+ * @brief MainWindow::chargerListWidgetProduits
+ * Vide la liste widget produit
+ * Charge la combobox avec les rayons
+ * Vide les vecteur associés a la liste widget produits
+ * Charge la listWidgetProduits avec les produits dans les rayons
+ */
 void MainWindow::chargerListWidgetProduits(){
+    //vide la liste widget produit
     ui->listWidgetProduits->clear();
+    //charge la combobox avec les rayons
     chargerComboBoxRayons();
+    //vide les vecteur associés a la liste widget produits
     vectorRayonsProduits.clear();
     vectorPositionInListOfRayon.clear();
     int i=0;
     QString rayon;
+    //requete qui permet d'afficher les produits dans les rayons
     QSqlQuery req("select produitId, produitLib, rayonLib from produit natural join rayon where produitLib like '%"+ui->lineEditRechercheProduits->text()+"%' order by rayonId , produitLib");
     while(req.next())
     {
@@ -129,9 +209,38 @@ void MainWindow::chargerListWidgetProduits(){
         ui->listWidgetProduits->addItem(item);
         i++;
     }
-    if(i==0)ui->listWidgetProduits->addItem("Aucun produit");
+    if(i==0)
+    {
+        ui->listWidgetProduits->addItem("Aucun produit");
+    }
 }
 
+/**
+ * @brief MainWindow::chargePageProduits
+ * Vide les champs : lineEditRechercheProduits, lineEditProduits
+ * Recharge la liste des produits dans les rayons
+ * Passe tous les boutons de la page produits a enable false
+ */
+void MainWindow::chargePageProduits()
+{
+    //vide tous les champs
+    ui->lineEditRechercheProduits->clear();
+    ui->lineEditProduits->clear();
+    //recharge la liste des produits dans les rayons
+    this->chargerListWidgetProduits();
+    //passe tous les boutons de la page produits a enable false
+    ui->pushButtonRayonsSupprimer->setEnabled(false);
+    ui->pushButtonRayonsModifier->setEnabled(false);
+    ui->pushButtonRayonsAnnuler->setEnabled(false);
+    ui->pushButtonRayonsAjouter->setEnabled(false);
+}
+
+/**
+ * @brief MainWindow::getRayonByProduit
+ * @param idProd
+ * @return rayonLib s'il y a un rayon avec l'idProd
+ * @return Message qui dit qu'il n'y a pas de produit avec l'id qui existe ou alors il n'a pas de rayons
+ */
 QString MainWindow::getRayonByProduit(QString idProd)
 {
     QSqlQuery requete("select rayonLib from produit natural join rayon where produit.produitId="+idProd);
@@ -146,7 +255,12 @@ QString MainWindow::getRayonByProduit(QString idProd)
     }
 }
 
-void MainWindow::on_listWidgetProduits_currentRowChanged()
+/**
+ * @brief MainWindow::on_listWidgetProduits_clicked
+ * Rempli les champs : lineEditProduits, comboBoxProduitsRayons
+ * Quand on clique sur la listWidgetProduits
+ */
+void MainWindow::on_listWidgetProduits_clicked()
 {
     bool produit=true;
     for(int i=0;i<vectorPositionInListOfRayon.size();i++)
@@ -175,6 +289,10 @@ void MainWindow::on_listWidgetProduits_currentRowChanged()
     }
 }
 
+/**
+ * @brief MainWindow::on_comboBoxProduitsRayons_currentIndexChanged
+ * Gestion des boutons quand changement d'index sur la comboBoxProduitsRayons passe tout à true
+ */
 void MainWindow::on_comboBoxProduitsRayons_currentIndexChanged()
 {
     //gestion des boutons après le clique (passe tout a true)
@@ -184,9 +302,36 @@ void MainWindow::on_comboBoxProduitsRayons_currentIndexChanged()
     ui->pushButtonProduitsAnnuler->setEnabled(true);
 }
 
+/**
+ * @brief MainWindow::on_lineEditRechercheProduits_textChanged
+ * Met le bouton annuler à true
+ * Recharge la liste avec la nouvelle requete (lineEditRechercheProduits)
+ */
+void MainWindow::on_lineEditRechercheProduits_textChanged()
+{
+    //met le bouton annuler à true
+    ui->pushButtonProduitsAnnuler->setEnabled(true);
+    //recharge la liste avec la nouvelle requete
+    this->chargerListWidgetProduits();
+}
+
+/**
+ * @brief MainWindow::on_pushButtonProduitsAnnuler_clicked
+ * Recharge la page des produits
+ */
+void MainWindow::on_pushButtonProduitsAnnuler_clicked()
+{
+    //recharge la page des produits
+    this->chargePageProduits();
+}
+
+/**
+ * @brief MainWindow::on_lineEditProduits_textChanged
+ * Gestion des boutons après modification de la lineEditProduits passe le bouton ajouter et annuler a true
+ */
 void MainWindow::on_lineEditProduits_textChanged()
 {
-    //gestion des boutons après le clique passe le bouton ajouter et annuler a true
+    //gestion des boutons après modification de la lineEditProduits passe le bouton ajouter et annuler a true
     ui->pushButtonProduitsAjouter->setEnabled(true);
     ui->pushButtonProduitsAnnuler->setEnabled(true);
 }
@@ -195,124 +340,44 @@ void MainWindow::on_lineEditProduits_textChanged()
 // ********************* EN ATTENTE ************************
 // ************************ TODO ***************************
 // ********************* A CLASSER *************************
-
 void MainWindow::on_pushButtonRayonsModifier_clicked()
 {
-    //vide le champs edit du rayons
-    ui->lineEditRayons->clear();
-    //gestion des boutons après le clique (passe tout a false)
-    ui->pushButtonRayonsSupprimer->setEnabled(false);
-    ui->pushButtonRayonsModifier->setEnabled(false);
-    ui->pushButtonRayonsAnnuler->setEnabled(false);
-    ui->pushButtonRayonsAjouter->setEnabled(false);
-    //charge la nouvelle liste de rayons
-    //charge la nouvelle liste de rayons dans la combobox de la page produits
+    //recharge la page des rayons
+    this->chargePageRayons();
+    //requete de modification d'un rayon
 }
 
 void MainWindow::on_pushButtonRayonsAjouter_clicked()
 {
-    //vide le champs edit du rayons
-    ui->lineEditRayons->clear();
-    //gestion des boutons après le clique (passe tout a false)
-    ui->pushButtonRayonsSupprimer->setEnabled(false);
-    ui->pushButtonRayonsModifier->setEnabled(false);
-    ui->pushButtonRayonsAnnuler->setEnabled(false);
-    ui->pushButtonRayonsAjouter->setEnabled(false);
-    //charge la nouvelle liste de rayons
-    //charge la nouvelle liste de rayons dans la combobox de la page produits
+    //recharge la page des rayons
+    this->chargePageRayons();
+    //requete d'ajout d'un rayon
 }
 
 void MainWindow::on_pushButtonRayonsSupprimer_clicked()
 {
-    //vide le champs edit du rayons
-    ui->lineEditRayons->clear();
-    //gestion des boutons après le clique (passe tout a false)
-    ui->pushButtonRayonsSupprimer->setEnabled(false);
-    ui->pushButtonRayonsModifier->setEnabled(false);
-    ui->pushButtonRayonsAnnuler->setEnabled(false);
-    ui->pushButtonRayonsAjouter->setEnabled(false);
-    //charge la nouvelle liste de rayons
-    //charge la nouvelle liste de rayons dans la combobox de la page produits
-}
-
-void MainWindow::on_lineEditRayons_textChanged()
-{
-    //quand le texte a était changé passe le bouton annuler et ajouter a true
-    ui->pushButtonRayonsAnnuler->setEnabled(true);
-    ui->pushButtonRayonsAjouter->setEnabled(true);
+    //recharge la page des rayons
+    this->chargePageRayons();
+    //requete de suppression d'un rayon
 }
 
 void MainWindow::on_pushButtonProduitsAjouter_clicked()
 {
-    //vide le champs edit du produit
-    ui->lineEditProduits->clear();
-    //vide le champs de recherche de produits
-    ui->lineEditRechercheProduits->clear();
-    //gestion des boutons après le clique (passe tout a false)
-    ui->pushButtonProduitsSupprimer->setEnabled(false);
-    ui->pushButtonProduitsModifier->setEnabled(false);
-    ui->pushButtonProduitsAnnuler->setEnabled(false);
-    ui->pushButtonProduitsAjouter->setEnabled(false);
-    //déconnecte
-    ui->listWidgetProduits->disconnect();
-    //charge la nouvelle liste de produits
-    chargerListWidgetProduits();
-    //reconnecte
-    connect(ui->listWidgetProduits,SIGNAL(currentRowChanged()),this,SLOT(on_lineEditProduits_textChanged()));
-    connect(ui->listWidgetProduits,SIGNAL(currentRowChanged()),this,SLOT(on_comboBoxProduitsRayons_currentIndexChanged()));
-    //perd la selection de la combobox
-}
-
-void MainWindow::on_pushButtonProduitsAnnuler_clicked()
-{
-    //vide le champs edit du produit
-    ui->lineEditProduits->clear();
-    //vide le champs de recherche de produits
-    ui->lineEditRechercheProduits->clear();
-    //gestion des boutons après le clique (passe tout a false)
-    ui->pushButtonProduitsAjouter->setEnabled(false);
-    ui->pushButtonProduitsModifier->setEnabled(false);
-    ui->pushButtonProduitsSupprimer->setEnabled(false);
-    ui->pushButtonProduitsAnnuler->setEnabled(false);
-    //perd la selection du rayon dans la combobox
-    /*ui->comboBoxProduitsRayons->clear();
-    chargerComboBoxRayons();*/
+    //recharge la page des produits
+    this->chargePageProduits();
+    //requete d'ajout d'un produit
 }
 
 void MainWindow::on_pushButtonProduitsModifier_clicked()
 {
-    //vide le champs edit du produit
-    ui->lineEditProduits->clear();
-    //vide le champs de recherche de produits
-    ui->lineEditRechercheProduits->clear();
-    //gestion des boutons après le clique (passe tout a false)
-    ui->pushButtonProduitsAjouter->setEnabled(false);
-    ui->pushButtonProduitsModifier->setEnabled(false);
-    ui->pushButtonProduitsSupprimer->setEnabled(false);
-    ui->pushButtonProduitsAnnuler->setEnabled(false);
-    //perd la selection du rayon dans la combobox
-    /*ui->comboBoxProduitsRayons->clear();
-    chargerComboBoxRayons();*/
+    //recharge la page des produits
+    this->chargePageProduits();
+    //requete de modification d'un produit
 }
 
 void MainWindow::on_pushButtonProduitsSupprimer_clicked()
 {
-    //vide le champs edit du produit
-    ui->lineEditProduits->clear();
-    //vide le champs de recherche de produits
-    ui->lineEditRechercheProduits->clear();
-    //gestion des boutons après le clique (passe tout a false)
-    ui->pushButtonProduitsAjouter->setEnabled(false);
-    ui->pushButtonProduitsModifier->setEnabled(false);
-    ui->pushButtonProduitsSupprimer->setEnabled(false);
-    ui->pushButtonProduitsAnnuler->setEnabled(false);
-    //perd la selection du rayon dans la combobox
-    /*ui->comboBoxProduitsRayons->clear();
-    chargerComboBoxRayons();*/
-}
-
-void MainWindow::on_lineEditRechercheProduits_textChanged()
-{
-    ui->pushButtonProduitsAnnuler->setEnabled(true);
-    //recharge la liste avec la nouvelle requete
+    //recharge la page des produits
+    this->chargePageProduits();
+    //requete de suppression d'un produit
 }
