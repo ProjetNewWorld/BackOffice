@@ -21,10 +21,13 @@ public:
     void chargerListWidgetProduits();
     void chargerListWidgetRayons();
     void chargerComboBoxRayons();
+    void chargePageRayons();
+    void chargePageProduits();
+
 private slots:
     void on_action_Quitter_triggered();
-    void on_listWidgetProduits_currentRowChanged();
-    void on_listWidgetRayons_currentRowChanged();
+    void on_listWidgetProduits_clicked();
+    void on_listWidgetRayons_clicked();
     void on_pushButtonProduitsAnnuler_clicked();
     void on_pushButtonRayonsAnnuler_clicked();
     void on_pushButtonRayonsModifier_clicked();
@@ -36,7 +39,7 @@ private slots:
     void on_pushButtonProduitsSupprimer_clicked();
     void on_comboBoxProduitsRayons_currentIndexChanged();
     void on_lineEditRechercheProduits_textChanged();
-    void on_lineEditProduits_textChanged();    
+    void on_lineEditProduits_textChanged();
 
 private:
     Ui::MainWindow *ui;
