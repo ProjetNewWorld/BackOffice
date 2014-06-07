@@ -1,6 +1,14 @@
+/**
+  * @date 07/06/2014
+  * @author Nicolas Capiaumont
+  * @version V1.0
+  * @brief Application BackOffice du groupe NewWorld pour l'application des courses
+  * Permet de supprimer, modifier et ajouter un rayon ou un produit.
+  * https://github.com/ProjetNewWorld/BackOffice
+  */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMessageBox>
 
 /**
  * @brief MainWindow::MainWindow
@@ -8,6 +16,7 @@
  * Constructeur de la MainWindow
  * Effectue la connexion à la base de données, si tout c'est bien passé crée l'ui et charge les pages rayons et produits
  * Si la connexion est à la base de données n'est pas possible affiche un message d'erreur
+ * Initialise l'application sur la page des produits
  */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->setupUi(this);
         this->chargerListWidgetRayons();
         this->chargerListWidgetProduits();
+        ui->tabProduits->setFocus();
     }
     else // sinon on affiche un message d'erreur
     {
@@ -87,6 +97,17 @@ void MainWindow::chargerComboBoxRayons()
     }
 }
 
+/**
+ * @brief MainWindow::on_tabWidget_tabBarClicked
+ * Charge au clique sur la tabWidget les deux pages (produits et rayons)
+ */
+void MainWindow::on_tabWidget_tabBarClicked()
+{
+    //charge au clique sur la tabWidget les deux pages (produits et rayons)
+    this->chargePageProduits();
+    this->chargePageRayons();
+}
+
 // *********************************************************
 // *********************** Rayons **************************
 /**
@@ -151,6 +172,26 @@ void MainWindow::on_listWidgetRayons_clicked()
 }
 
 /**
+ * @brief MainWindow::getVectorIdProduit
+ * @param rayonId
+ * @return Revoit un vecteur qui contient l'id de tout les produits qui sont dans le rayon dont l'id est passé en paramétre
+ */
+QVector<QString> MainWindow::getVecteurIdProduit(QString idRayon)
+{
+    //déclaration du vecteurIdProduit
+    QVector <QString> vecteurIdProduit;
+    //requete qui renvoit tous les produits du rayon avec l'id idRayon
+    QSqlQuery req("select produitId from produit where rayonId="+idRayon);
+    //remplit le vecteur avec chaque produits du rayons
+    while(req.next())
+    {
+        vecteurIdProduit.push_back(req.value(0).toString());
+    }
+    //retourne le vecteurIdProduit remplit
+    return vecteurIdProduit;
+}
+
+/**
  * @brief MainWindow::on_lineEditRayons_textChanged
  * Quand le texte a été changé passe le bouton annuler et ajouter a TRUE
  */
@@ -159,6 +200,105 @@ void MainWindow::on_lineEditRayons_textChanged()
     //quand le texte a été changé passe le bouton annuler et ajouter a true
     ui->pushButtonRayonsAnnuler->setEnabled(true);
     ui->pushButtonRayonsAjouter->setEnabled(true);
+}
+
+/**
+ * @brief MainWindow::on_pushButtonRayonsAjouter_clicked
+ * Recherche voir si le rayon n'existe pas
+ * Si il n'y a pas de résultat donc pas de rayon avec ce nom
+ * Requete d'ajout d'un rayon
+ * Recharge la page des rayons
+ * Sinon le rayon existe affiche un message d'erreur (existe déjà)
+ */
+void MainWindow::on_pushButtonRayonsAjouter_clicked()
+{
+    //recherche voir si le rayon n'existe pas
+    QSqlQuery recherche("select * from rayon where rayonLib='"+ui->lineEditRayons->text()+"'");
+    recherche.first();
+    //si il n'y a pas de résultat donc pas de rayon avec ce nom
+    if(!(recherche.size()>0))
+    {
+        //requete d'ajout d'un rayon
+        QSqlQuery req("insert into rayon (rayonLib) values ('"+ui->lineEditRayons->text()+"')");
+        //qDebug()<<"insert into rayon (rayonLib) values ('"+ui->lineEditRayons->text()+"')";
+        //recharge la page des rayons
+        this->chargePageRayons();
+    }
+    //sinon le rayon existe affiche un message d'erreur (existe déjà)
+    else
+    {
+        QMessageBox::warning(this,"Erreur", "Ce rayon existe déjà !");
+    }
+}
+
+/**
+ * @brief MainWindow::on_pushButtonRayonsModifier_clicked
+ * Requete de vérification, si le rayon n'existe pas déjà
+ * Si le rayon n'existe pas on peut le mettre à jour
+ * Requete de modification d'un rayon
+ * Recharge la page des rayons
+ * Sinon affiche un message d'erreur
+ */
+void MainWindow::on_pushButtonRayonsModifier_clicked()
+{
+    //déclaration de la requete
+    QString requeteVerif="select * from rayon where rayonLib ='"+ui->lineEditRayons->text()+"'";
+    //qDebug()<<requeteVerif;
+    //requete de vérification, si le rayon n'existe pas déjà
+    QSqlQuery requeteVerifExistRayon(requeteVerif);
+    requeteVerifExistRayon.first();
+    //si le rayon n'existe pas on peut le mettre à jour
+    if(!(requeteVerifExistRayon.size()>0))
+    {
+        //déclaration de la requete
+        QString requete="update rayon set rayonLib='"+ui->lineEditRayons->text()+"' where rayonId = "+vectorRayons.value(ui->listWidgetRayons->currentRow());
+        //requete de modification d'un rayon
+        QSqlQuery requeteModificationRayon(requete);
+        //recharge la page des rayons
+        this->chargePageRayons();
+    }
+    //sinon affiche un message d'erreur
+    else
+    {
+        //message d'erreur si le rayon existe déjà
+        QMessageBox::warning(this,"Erreur modification","Modification impossible, le nom de rayon est déjà utilisé");
+    }
+}
+
+/**
+ * @brief MainWindow::on_pushButtonRayonsSupprimer_clicked
+ * Récupére la ligne selectionné
+ * Demande si on est sur de vouloir supprimer le rayon avec tous les produits associés au rayon
+ * Si la reponse est oui supprime les produits du rayon, des listes et le rayon
+ * Recupére tous les produits dans un vecteur
+ * Supprime tous les produits dans contenuliste si le produits était dans une liste, tous les produits dans le rayon et le rayon
+ * Recharge la liste des rayons et les produits
+ */
+void MainWindow::on_pushButtonRayonsSupprimer_clicked()
+{
+    //récupére la ligne selectionné
+    QString rayonId=vectorRayons.value(ui->listWidgetRayons->currentRow());
+    //demande si on est sur de vouloir supprimer le rayon avec tous les produits associés au rayon
+    int reponse=QMessageBox::question(this, "Confirmation de suppression", "Êtes-vous sûr de vouloir supprimer le rayon '"+ui->listWidgetRayons->currentItem()->text()+"', et tout les produits qu'il contient ? Celà supprimera également ces produits dans les éventuelles listes de courses.", QMessageBox::Yes | QMessageBox::Cancel);
+    switch (reponse) {
+    //si la reponse est oui supprime les produits du rayon, des listes et le rayon
+    case QMessageBox::Yes:
+        //recupére tous les produits dans un vecteur
+        QVector <QString> vecteurIdProduit=getVecteurIdProduit(rayonId);
+        for(int i=0;i<vecteurIdProduit.size();i++)
+        {
+            //requete qui supprime chaque contenuliste si le produits était dedans
+            QSqlQuery requeteSupprimeContenulisteProduits("delete from contenuliste where produitId = "+vecteurIdProduit.value(i));
+        }
+        //requetes de suppression
+        QSqlQuery requeteSupprimeProduitsDansRayons("delete from produit where rayonId = "+rayonId);
+        QSqlQuery requeteSupprimeRayons("delete from rayon where rayonId = "+rayonId);
+        //charge la page produits
+        this->chargePageProduits();
+        //charge la page rayons
+        this->chargePageRayons();
+        break;
+    }
 }
 
 /**
@@ -244,7 +384,7 @@ void MainWindow::chargePageProduits()
 QString MainWindow::getRayonByProduit(QString idProd)
 {
     QSqlQuery requete("select rayonLib from produit natural join rayon where produit.produitId="+idProd);
-    requete.next();
+    requete.first();
     if(requete.size()>0)
     {
         return requete.value(0).toString();
@@ -254,6 +394,22 @@ QString MainWindow::getRayonByProduit(QString idProd)
         return "Le produit avec comme id "+idProd+" n'éxiste pas ou n est pas dans un rayon !";
     }
 }
+
+/**
+ * @brief MainWindow::getIdRayonByName
+ * @param rayonLib
+ * requete de selection de l'id par rapport au nom du rayon
+ * @return l'id du rayon par rapport à son libelle
+ */
+QString MainWindow::getIdRayonByName(QString rayonLib)
+{
+    //requete de selection de l'id par rapport au nom du rayon
+    QSqlQuery requeteRayonIdByName("select rayonId from rayon where rayonLib='"+rayonLib+"'");
+    requeteRayonIdByName.first();
+    //retourne l'id du rayon par rapport a son libelle
+    return requeteRayonIdByName.value(0).toString();
+}
+
 
 /**
  * @brief MainWindow::on_listWidgetProduits_clicked
@@ -274,7 +430,7 @@ void MainWindow::on_listWidgetProduits_clicked()
     {
         ui->lineEditProduits->setText(ui->listWidgetProduits->currentItem()->text()); // on met le nom du produit dans la line edit
         QString idProduit=vectorRayonsProduits.value(ui->listWidgetProduits->currentRow()); // on recupere l'id du produit
-        chargerComboBoxRayons(); // on charge la liste des rayons (combo box)
+        this->chargerComboBoxRayons(); // on charge la liste des rayons (combo box)
         QString rayonLib=getRayonByProduit(idProduit); // on recupere le nom du rayon du produit
         for(int i = 0 ; i< ui->comboBoxProduitsRayons->count() ; i++) // pour tout le rayon
         {
@@ -293,7 +449,7 @@ void MainWindow::on_listWidgetProduits_clicked()
  * @brief MainWindow::on_comboBoxProduitsRayons_currentIndexChanged
  * Gestion des boutons quand changement d'index sur la comboBoxProduitsRayons passe tout à true
  */
-void MainWindow::on_comboBoxProduitsRayons_currentIndexChanged()
+void MainWindow::on_comboBoxProduitsRayons_currentIndexChanged(int)
 {
     //gestion des boutons après le clique (passe tout a true)
     ui->pushButtonProduitsAjouter->setEnabled(true);
@@ -313,6 +469,97 @@ void MainWindow::on_lineEditRechercheProduits_textChanged()
     ui->pushButtonProduitsAnnuler->setEnabled(true);
     //recharge la liste avec la nouvelle requete
     this->chargerListWidgetProduits();
+}
+
+/**
+ * @brief MainWindow::on_pushButtonProduitsAjouter_clicked
+ * Requete de verification pour savoir si le produit existe ou pas
+ * Si le rayon n'existe pas
+ * Recupére l'id du rayon selectionné dans la combobox
+ * Requete d'ajout du nouveau produit (produitLib et rayonId)
+ * Charge la page des produits
+ * Sinon affiche un message d'erreur (existe déjà)
+ */
+void MainWindow::on_pushButtonProduitsAjouter_clicked()
+{
+    //requete de verification pour savoir si le produit existe ou pas
+    QSqlQuery req("select * from produit where produitLib='"+ui->lineEditProduits->text()+"'");
+    req.first();
+    //si le rayon n'existe pas
+    if(!(req.size()>0))
+    {
+        //recupére l'id du rayon selectionné dans la combobox
+        QString rayonId=getIdRayonByName(ui->comboBoxProduitsRayons->currentText());
+        //requete d'ajout du nouveau produit (produitLib et rayonId)
+        QSqlQuery requeteAjoutProduit("insert into produit (produitLib, rayonId) values ('"+ui->lineEditProduits->text()+"',"+rayonId+")");
+        //charge la page des produits
+        this->chargePageProduits();
+    }
+    //sinon affiche un message d'erreur (existe déjà)
+    else
+    {
+        QMessageBox::warning(this,"Erreur", "Ce produit existe déjà !");
+    }
+}
+
+/**
+ * @brief MainWindow::on_pushButtonProduitsSupprimer_clicked
+ * Recupére l'id du produit dans le vecteur grace a la ligne selectionné dans la listWidgetProduits
+ * Message de verification du suppression d'un produit
+ * Si la réponse est oui
+ * Supprime le produit dans les contenuListe
+ * Supprime le produits
+ * Charge la page des produits
+ */
+void MainWindow::on_pushButtonProduitsSupprimer_clicked()
+{
+    //recupére l'id du produit dans le vecteur grace a la ligne selectionné dans la listWidgetProduits
+    QString produitId=vectorRayonsProduits.value(ui->listWidgetProduits->currentRow());
+    //Message de verification du suppression d'un produit
+    int reponse=QMessageBox::question(this, "Confirmation de suppression", "Êtes-vous sûr de vouloir supprimer le produit '"+ui->listWidgetProduits->currentItem()->text()+"'. Celà supprimera également ce produit dans les éventuelles listes de courses.", QMessageBox::Yes | QMessageBox::Cancel);
+    switch (reponse) {
+    //si la réponse est oui
+    case QMessageBox::Yes:
+        //supprime le produit dans les contenuListe
+        QSqlQuery requeteSuppressionProduitContenuListe("delete from contenuliste where produitId = "+produitId);
+        //supprime le produits
+        QSqlQuery requeteSuppressionProduit("delete from produit where produitId = "+produitId);
+        //charge la page des produits
+        this->chargePageProduits();
+        break;
+    }
+}
+
+/**
+ * @brief MainWindow::on_pushButtonProduitsModifier_clicked
+ * Requete de vérification, si le produit n'existe pas déjà
+ * Si le produit n'existe pas on peut le mettre à jour
+ * Requete de modification du libellé du produit
+ * Recharge la page des produits
+ * Sinon affiche un message d'erreur
+ * Message d'erreur si le produit existe déjà
+ */
+void MainWindow::on_pushButtonProduitsModifier_clicked()
+{
+    //déclaration de la requete
+    QString requeteVerifProduit="select * from produit where produitLib ='"+ui->lineEditProduits->text()+"'";
+    //requete de vérification, si le produit n'existe pas déjà
+    QSqlQuery requeteVerifExistProduit(requeteVerifProduit);
+    requeteVerifExistProduit.first();
+    //si le produit n'existe pas on peut le mettre à jour
+    if(!(requeteVerifExistProduit.size()>0))
+    {
+        //requete de modification du libellé du produit
+        QSqlQuery requeteModificationProduit("update produit set produitLib='"+ui->lineEditProduits->text()+"', rayonId="+getIdRayonByName(ui->comboBoxProduitsRayons->currentText())+" where produitId = "+vectorRayonsProduits.value(ui->listWidgetProduits->currentRow())+"");
+        //recharge la page des produits
+        this->chargePageProduits();
+    }
+    //sinon affiche un message d'erreur
+    else
+    {
+        //message d'erreur si le produit existe déjà
+        QMessageBox::warning(this,"Erreur modification","Modification impossible, le nom du produit est déjà utilisé");
+    }
 }
 
 /**
@@ -340,44 +587,3 @@ void MainWindow::on_lineEditProduits_textChanged()
 // ********************* EN ATTENTE ************************
 // ************************ TODO ***************************
 // ********************* A CLASSER *************************
-void MainWindow::on_pushButtonRayonsModifier_clicked()
-{
-    //recharge la page des rayons
-    this->chargePageRayons();
-    //requete de modification d'un rayon
-}
-
-void MainWindow::on_pushButtonRayonsAjouter_clicked()
-{
-    //recharge la page des rayons
-    this->chargePageRayons();
-    //requete d'ajout d'un rayon
-}
-
-void MainWindow::on_pushButtonRayonsSupprimer_clicked()
-{
-    //recharge la page des rayons
-    this->chargePageRayons();
-    //requete de suppression d'un rayon
-}
-
-void MainWindow::on_pushButtonProduitsAjouter_clicked()
-{
-    //recharge la page des produits
-    this->chargePageProduits();
-    //requete d'ajout d'un produit
-}
-
-void MainWindow::on_pushButtonProduitsModifier_clicked()
-{
-    //recharge la page des produits
-    this->chargePageProduits();
-    //requete de modification d'un produit
-}
-
-void MainWindow::on_pushButtonProduitsSupprimer_clicked()
-{
-    //recharge la page des produits
-    this->chargePageProduits();
-    //requete de suppression d'un produit
-}

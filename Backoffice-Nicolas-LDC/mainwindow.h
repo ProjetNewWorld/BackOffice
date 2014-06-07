@@ -1,11 +1,24 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+/**
+  * @brief Inclusion des dépendances
+  * QMainWindow
+  * QSqlDatabase
+  * QSqlQuery
+  * QVector
+  * QListWidgetItem
+  * QMessageBox
+  * QDebug
+  */
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QVector>
 #include <QListWidgetItem>
+#include <QMessageBox>
+#include <QDebug>
+
 namespace Ui {
 class MainWindow;
 }
@@ -23,6 +36,8 @@ public:
     void chargerComboBoxRayons();
     void chargePageRayons();
     void chargePageProduits();
+    QVector <QString> getVecteurIdProduit(QString idRayon);
+    QString getIdRayonByName(QString rayonLib);
 
 private slots:
     void on_action_Quitter_triggered();
@@ -37,9 +52,10 @@ private slots:
     void on_pushButtonProduitsAjouter_clicked();
     void on_pushButtonProduitsModifier_clicked();
     void on_pushButtonProduitsSupprimer_clicked();
-    void on_comboBoxProduitsRayons_currentIndexChanged();
+    void on_comboBoxProduitsRayons_currentIndexChanged(int);
     void on_lineEditRechercheProduits_textChanged();
     void on_lineEditProduits_textChanged();
+    void on_tabWidget_tabBarClicked();
 
 private:
     Ui::MainWindow *ui;
