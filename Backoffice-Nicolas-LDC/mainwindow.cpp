@@ -25,8 +25,9 @@ MainWindow::MainWindow(QWidget *parent) :
     if(connectBase()) // si la connexion c'est bien passé
     {
         ui->setupUi(this);
-        this->chargerListWidgetRayons();
-        this->chargerListWidgetProduits();
+        //charge les pages
+        this->chargePageProduits();
+        this->chargePageRayons();
         ui->tabProduits->setFocus();
     }
     else // sinon on affiche un message d'erreur
@@ -213,13 +214,16 @@ void MainWindow::on_lineEditRayons_textChanged()
 void MainWindow::on_pushButtonRayonsAjouter_clicked()
 {
     //recherche voir si le rayon n'existe pas
-    QSqlQuery recherche("select * from rayon where rayonLib='"+ui->lineEditRayons->text()+"'");
-    recherche.first();
+    QSqlQuery rechercheRayon("select * from rayon where rayonLib='"+ui->lineEditRayons->text()+"'");
     //si il n'y a pas de résultat donc pas de rayon avec ce nom
-    if(!(recherche.size()>0))
+    if(!(rechercheRayon.size()>0))
     {
+        if(ui->lineEditRayons->text()=="")
+        {
+            QMessageBox::information(this,"Erreur", "Vous devez renseigner un nom de rayon");
+        }
         //requete d'ajout d'un rayon
-        QSqlQuery req("insert into rayon (rayonLib) values ('"+ui->lineEditRayons->text()+"')");
+        QSqlQuery requeteAjoutRayon("insert into rayon (rayonLib) values ('"+ui->lineEditRayons->text()+"')");
         //qDebug()<<"insert into rayon (rayonLib) values ('"+ui->lineEditRayons->text()+"')";
         //recharge la page des rayons
         this->chargePageRayons();
@@ -246,7 +250,6 @@ void MainWindow::on_pushButtonRayonsModifier_clicked()
     //qDebug()<<requeteVerif;
     //requete de vérification, si le rayon n'existe pas déjà
     QSqlQuery requeteVerifExistRayon(requeteVerif);
-    requeteVerifExistRayon.first();
     //si le rayon n'existe pas on peut le mettre à jour
     if(!(requeteVerifExistRayon.size()>0))
     {
@@ -369,10 +372,10 @@ void MainWindow::chargePageProduits()
     //recharge la liste des produits dans les rayons
     this->chargerListWidgetProduits();
     //passe tous les boutons de la page produits a enable false
-    ui->pushButtonRayonsSupprimer->setEnabled(false);
-    ui->pushButtonRayonsModifier->setEnabled(false);
-    ui->pushButtonRayonsAnnuler->setEnabled(false);
-    ui->pushButtonRayonsAjouter->setEnabled(false);
+    ui->pushButtonProduitsSupprimer->setEnabled(false);
+    ui->pushButtonProduitsModifier->setEnabled(false);
+    ui->pushButtonProduitsAnnuler->setEnabled(false);
+    ui->pushButtonProduitsAjouter->setEnabled(false);
 }
 
 /**
@@ -391,7 +394,7 @@ QString MainWindow::getRayonByProduit(QString idProd)
     }
     else
     {
-        return "Le produit avec comme id "+idProd+" n'éxiste pas ou n est pas dans un rayon !";
+        return "Le produit avec comme id "+idProd+" n'éxiste pas ou n'est pas dans un rayon !";
     }
 }
 
@@ -484,16 +487,28 @@ void MainWindow::on_pushButtonProduitsAjouter_clicked()
 {
     //requete de verification pour savoir si le produit existe ou pas
     QSqlQuery req("select * from produit where produitLib='"+ui->lineEditProduits->text()+"'");
-    req.first();
-    //si le rayon n'existe pas
-    if(!(req.size()>0))
+    //si le rayon n'existe pas ou que la combobox est a l'index 0
+    if(!(req.size()>0 || ui->comboBoxProduitsRayons->currentIndex()==0))
     {
-        //recupére l'id du rayon selectionné dans la combobox
-        QString rayonId=getIdRayonByName(ui->comboBoxProduitsRayons->currentText());
-        //requete d'ajout du nouveau produit (produitLib et rayonId)
-        QSqlQuery requeteAjoutProduit("insert into produit (produitLib, rayonId) values ('"+ui->lineEditProduits->text()+"',"+rayonId+")");
-        //charge la page des produits
-        this->chargePageProduits();
+        //si aucun nom a été donné
+        if(ui->lineEditProduits->text()=="")
+        {
+            QMessageBox::information(this,"Erreur", "Vous devez spécifier un nom pour ce produit");
+        }
+        else
+        {
+            //recupére l'id du rayon selectionné dans la combobox
+            QString rayonId=getIdRayonByName(ui->comboBoxProduitsRayons->currentText());
+            //requete d'ajout du nouveau produit (produitLib et rayonId)
+            QSqlQuery requeteAjoutProduit("insert into produit (produitLib, rayonId) values ('"+ui->lineEditProduits->text()+"',"+rayonId+")");
+            //charge la page des produits
+            this->chargePageProduits();
+        }
+    }
+    //sinon si aucun rayon choisie
+    else if(ui->comboBoxProduitsRayons->currentIndex()==0)
+    {
+        QMessageBox::warning(this,"Erreur", "Vous devez choisir un rayon pour ce produit");
     }
     //sinon affiche un message d'erreur (existe déjà)
     else
@@ -542,13 +557,14 @@ void MainWindow::on_pushButtonProduitsSupprimer_clicked()
 void MainWindow::on_pushButtonProduitsModifier_clicked()
 {
     //déclaration de la requete
-    QString requeteVerifProduit="select * from produit where produitLib ='"+ui->lineEditProduits->text()+"'";
-    //requete de vérification, si le produit n'existe pas déjà
+    QString requeteVerifProduit="select * from produit where produitLib ='"+ui->lineEditProduits->text()+"' and rayonId="+getIdRayonByName(ui->comboBoxProduitsRayons->currentText());
+    //qDebug()<<"select * from produit where produitLib ='"+ui->lineEditProduits->text()+"' and rayonId="+getIdRayonByName(ui->comboBoxProduitsRayons->currentText());
+    //requete de vérification, si le produit n'existe pas déjà et qu'il n'est pas dans le même rayon
     QSqlQuery requeteVerifExistProduit(requeteVerifProduit);
-    requeteVerifExistProduit.first();
     //si le produit n'existe pas on peut le mettre à jour
     if(!(requeteVerifExistProduit.size()>0))
     {
+        //qDebug()<<"existe pas";
         //requete de modification du libellé du produit
         QSqlQuery requeteModificationProduit("update produit set produitLib='"+ui->lineEditProduits->text()+"', rayonId="+getIdRayonByName(ui->comboBoxProduitsRayons->currentText())+" where produitId = "+vectorRayonsProduits.value(ui->listWidgetProduits->currentRow())+"");
         //recharge la page des produits
