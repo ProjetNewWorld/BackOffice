@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.6"/>
+<title>My Project:  Fichier source de mainwindow.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+  $(window).load(resizeHeight);
+</script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="LDC.png"/></td>
+  <td style="padding-left: 0.5em;">
+   <div id="projectname">My Project
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Page&#160;principale</span></a></li>
+      <li><a href="namespaces.html"><span>Espaces&#160;de&#160;nommage</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="files.html"><span>Fichiers</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Recherche" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Liste&#160;des&#160;fichiers</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('mainwindow_8h_source.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Tout</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Espaces de nommage</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Fonctions</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">mainwindow.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef MAINWINDOW_H</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define MAINWINDOW_H</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;QMainWindow&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;QSqlDatabase&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;QSqlQuery&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;QVector&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;QListWidgetItem&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;QMessageBox&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;QDebug&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="namespace_ui.html">   22</a></span>&#160;<span class="keyword">namespace </span>Ui {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">class </span><a class="code" href="class_ui_1_1_main_window.html">MainWindow</a>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="class_main_window.html">   26</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_main_window.html">MainWindow</a> : <span class="keyword">public</span> QMainWindow</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_main_window.html#a8b244be8b7b7db1b08de2a2acb9409db">MainWindow</a>(QWidget *parent = 0);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="class_main_window.html#ae98d00a93bc118200eeef9f9bba1dba7">~MainWindow</a>();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_main_window.html#af633c535185e6a10adbc9e9708085960">connectBase</a>();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#ae9800753ef83a789f51a91f60cfe4475">chargerListWidgetProduits</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#acf9832544ffcc92164756bb4699364d6">chargerListWidgetRayons</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#af841a976fc5157d6201c77a28dd23015">chargerComboBoxRayons</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#a9bd2a6f58c34e0dea7140eaecf0aa0a4">chargePageRayons</a>();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_main_window.html#ad33d56e5cb1fa4a35b322a946998dfd4">chargePageProduits</a>();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    QVector &lt;QString&gt; <a class="code" href="class_main_window.html#a531e94ccb57c12cdbc515b4fc412e52d">getVecteurIdProduit</a>(QString idRayon);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    QString <a class="code" href="class_main_window.html#add9c3f3a131b78e08600a83e316c56aa">getIdRayonByName</a>(QString rayonLib);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">void</span> on_action_Quitter_triggered();</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">void</span> on_listWidgetProduits_clicked();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">void</span> on_listWidgetRayons_clicked();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">void</span> on_pushButtonProduitsAnnuler_clicked();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> on_pushButtonRayonsAnnuler_clicked();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span> on_pushButtonRayonsModifier_clicked();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> on_pushButtonRayonsAjouter_clicked();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span> on_pushButtonRayonsSupprimer_clicked();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> on_lineEditRayons_textChanged();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> on_pushButtonProduitsAjouter_clicked();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> on_pushButtonProduitsModifier_clicked();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> on_pushButtonProduitsSupprimer_clicked();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> on_comboBoxProduitsRayons_currentIndexChanged(<span class="keywordtype">int</span>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> on_lineEditRechercheProduits_textChanged();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> on_lineEditProduits_textChanged();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> on_tabWidget_tabBarClicked();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="class_ui_1_1_main_window.html">Ui::MainWindow</a> *ui;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    QSqlDatabase listedescourses;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    QVector &lt;QString&gt; vectorRayons;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    QVector &lt;QString&gt; vectorRayonsProduits;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    QVector &lt;int&gt; vectorPositionInListOfRayon;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    QString getRayonByProduit(QString idProd);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif // MAINWINDOW_H</span></div>
+<div class="ttc" id="class_main_window_html_af633c535185e6a10adbc9e9708085960"><div class="ttname"><a href="class_main_window.html#af633c535185e6a10adbc9e9708085960">MainWindow::connectBase</a></div><div class="ttdeci">bool connectBase()</div><div class="ttdoc">MainWindow::connectBase , permet la connexion a la base de données. </div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:53</div></div>
+<div class="ttc" id="class_main_window_html_ae98d00a93bc118200eeef9f9bba1dba7"><div class="ttname"><a href="class_main_window.html#ae98d00a93bc118200eeef9f9bba1dba7">MainWindow::~MainWindow</a></div><div class="ttdeci">~MainWindow()</div><div class="ttdoc">MainWindow::~MainWindow Destructeur de la MainWindow. </div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:42</div></div>
+<div class="ttc" id="class_main_window_html_ad33d56e5cb1fa4a35b322a946998dfd4"><div class="ttname"><a href="class_main_window.html#ad33d56e5cb1fa4a35b322a946998dfd4">MainWindow::chargePageProduits</a></div><div class="ttdeci">void chargePageProduits()</div><div class="ttdoc">MainWindow::chargePageProduits Vide les champs : lineEditRechercheProduits, lineEditProduits Recharge...</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:364</div></div>
+<div class="ttc" id="class_main_window_html_af841a976fc5157d6201c77a28dd23015"><div class="ttname"><a href="class_main_window.html#af841a976fc5157d6201c77a28dd23015">MainWindow::chargerComboBoxRayons</a></div><div class="ttdeci">void chargerComboBoxRayons()</div><div class="ttdoc">MainWindow::chargerComboBoxRayons Vide la combobox : comboBoxProduitsRayons Charger la combobox : com...</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:86</div></div>
+<div class="ttc" id="class_main_window_html_a9bd2a6f58c34e0dea7140eaecf0aa0a4"><div class="ttname"><a href="class_main_window.html#a9bd2a6f58c34e0dea7140eaecf0aa0a4">MainWindow::chargePageRayons</a></div><div class="ttdeci">void chargePageRayons()</div><div class="ttdoc">MainWindow::chargePageRayons Vide le champ : lineEditRayons Recharge la liste des rayons Passe tous l...</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:145</div></div>
+<div class="ttc" id="class_main_window_html_a531e94ccb57c12cdbc515b4fc412e52d"><div class="ttname"><a href="class_main_window.html#a531e94ccb57c12cdbc515b4fc412e52d">MainWindow::getVecteurIdProduit</a></div><div class="ttdeci">QVector&lt; QString &gt; getVecteurIdProduit(QString idRayon)</div><div class="ttdoc">MainWindow::getVectorIdProduit. </div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:179</div></div>
+<div class="ttc" id="class_main_window_html_a8b244be8b7b7db1b08de2a2acb9409db"><div class="ttname"><a href="class_main_window.html#a8b244be8b7b7db1b08de2a2acb9409db">MainWindow::MainWindow</a></div><div class="ttdeci">MainWindow(QWidget *parent=0)</div><div class="ttdoc">Application BackOffice du groupe NewWorld pour l&#39;application des courses Permet de supprimer...</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:21</div></div>
+<div class="ttc" id="class_ui_1_1_main_window_html"><div class="ttname"><a href="class_ui_1_1_main_window.html">Ui::MainWindow</a></div><div class="ttdef"><b>Definition:</b> ui_mainwindow.h:371</div></div>
+<div class="ttc" id="class_main_window_html_acf9832544ffcc92164756bb4699364d6"><div class="ttname"><a href="class_main_window.html#acf9832544ffcc92164756bb4699364d6">MainWindow::chargerListWidgetRayons</a></div><div class="ttdeci">void chargerListWidgetRayons()</div><div class="ttdoc">MainWindow::chargerListWidgetRayons Vide la listWidgetRayons, la lineEditRayons, le vectorRayons...</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:117</div></div>
+<div class="ttc" id="class_main_window_html_add9c3f3a131b78e08600a83e316c56aa"><div class="ttname"><a href="class_main_window.html#add9c3f3a131b78e08600a83e316c56aa">MainWindow::getIdRayonByName</a></div><div class="ttdeci">QString getIdRayonByName(QString rayonLib)</div><div class="ttdoc">MainWindow::getIdRayonByName. </div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:404</div></div>
+<div class="ttc" id="class_main_window_html_ae9800753ef83a789f51a91f60cfe4475"><div class="ttname"><a href="class_main_window.html#ae9800753ef83a789f51a91f60cfe4475">MainWindow::chargerListWidgetProduits</a></div><div class="ttdeci">void chargerListWidgetProduits()</div><div class="ttdoc">MainWindow::chargerListWidgetProduits Vide la liste widget produit Charge la combobox avec les rayons...</div><div class="ttdef"><b>Definition:</b> mainwindow.cpp:323</div></div>
+<div class="ttc" id="class_main_window_html"><div class="ttname"><a href="class_main_window.html">MainWindow</a></div><div class="ttdef"><b>Definition:</b> mainwindow.h:26</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><b>mainwindow.h</b></li>
+    <li class="footer">Généré le Samedi 7 Juin 2014 21:34:43 pour My Project par
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
+  </ul>
+</div>
+</body>
+</html>
