@@ -13,8 +13,63 @@
   <property name="windowTitle">
    <string>BackOffice - NewWorld</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
+  <widget class="QWidget" name="widget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="images.qrc">:/images/LDC.png</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="label_2">
+        <property name="styleSheet">
+         <string notr="true">font: 24pt &quot;Microsoft Sans Serif&quot;;</string>
+        </property>
+        <property name="text">
+         <string>BackOffice NewWorld</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::AutoText</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="maximumSize">
+         <size>
+          <width>70</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
@@ -31,7 +86,36 @@
            <string>Liste des produits</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="1" column="0">
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEditRechercheProduits">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="maximumSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="images.qrc">:/images/rechercher.png</pixmap>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
             <widget class="QListWidget" name="listWidgetProduits">
              <property name="minimumSize">
               <size>
@@ -41,16 +125,6 @@
              </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLineEdit" name="lineEditRechercheProduits">
-             <property name="minimumSize">
-              <size>
-               <width>250</width>
-               <height>0</height>
-              </size>
              </property>
             </widget>
            </item>
@@ -139,6 +213,10 @@
                  <property name="text">
                   <string>&amp;Ajouter</string>
                  </property>
+                 <property name="icon">
+                  <iconset resource="images.qrc">
+                   <normaloff>:/images/ajouter.png</normaloff>:/images/ajouter.png</iconset>
+                 </property>
                 </widget>
                </item>
                <item row="0" column="1">
@@ -148,6 +226,10 @@
                  </property>
                  <property name="text">
                   <string>&amp;Modifier</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="images.qrc">
+                   <normaloff>:/images/modifier.png</normaloff>:/images/modifier.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -159,6 +241,10 @@
                  <property name="text">
                   <string>&amp;Supprimer</string>
                  </property>
+                 <property name="icon">
+                  <iconset resource="images.qrc">
+                   <normaloff>:/images/supprimer.png</normaloff>:/images/supprimer.png</iconset>
+                 </property>
                 </widget>
                </item>
                <item row="1" column="1">
@@ -168,6 +254,10 @@
                  </property>
                  <property name="text">
                   <string>&amp;Annuler</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="images.qrc">
+                   <normaloff>:/images/annuler.png</normaloff>:/images/annuler.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -272,6 +362,10 @@
                  <property name="text">
                   <string>&amp;Ajouter</string>
                  </property>
+                 <property name="icon">
+                  <iconset resource="images.qrc">
+                   <normaloff>:/images/ajouter.png</normaloff>:/images/ajouter.png</iconset>
+                 </property>
                 </widget>
                </item>
                <item row="0" column="1">
@@ -282,6 +376,10 @@
                  <property name="text">
                   <string>&amp;Modifier</string>
                  </property>
+                 <property name="icon">
+                  <iconset resource="images.qrc">
+                   <normaloff>:/images/modifier.png</normaloff>:/images/modifier.png</iconset>
+                 </property>
                 </widget>
                </item>
                <item row="1" column="0">
@@ -291,6 +389,10 @@
                  </property>
                  <property name="text">
                   <string>&amp;Supprimer</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="images.qrc">
+                   <normaloff>:/images/supprimer.png</normaloff>:/images/supprimer.png</iconset>
                  </property>
                  <property name="checkable">
                   <bool>false</bool>
@@ -304,6 +406,10 @@
                  </property>
                  <property name="text">
                   <string>&amp;Annuler</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="images.qrc">
+                   <normaloff>:/images/annuler.png</normaloff>:/images/annuler.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -362,6 +468,8 @@
   <tabstop>pushButtonProduitsSupprimer</tabstop>
   <tabstop>pushButtonProduitsAnnuler</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
