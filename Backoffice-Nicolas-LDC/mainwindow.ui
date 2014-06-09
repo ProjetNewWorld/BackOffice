@@ -7,11 +7,21 @@
     <x>0</x>
     <y>0</y>
     <width>703</width>
-    <height>441</height>
+    <height>487</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>BackOffice - NewWorld</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/LDC.png</normaloff>:/images/LDC.png</iconset>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
   <widget class="QWidget" name="widget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -73,11 +83,14 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabProduits">
        <attribute name="title">
         <string>Produits</string>
+       </attribute>
+       <attribute name="toolTip">
+        <string>Gestion des produits</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_7">
         <item row="0" column="0">
@@ -93,6 +106,12 @@
                <width>0</width>
                <height>0</height>
               </size>
+             </property>
+             <property name="toolTip">
+              <string>Entrer le nom du produit à rechercher</string>
+             </property>
+             <property name="placeholderText">
+              <string>Rechercher un produit ...</string>
              </property>
             </widget>
            </item>
@@ -169,6 +188,15 @@
                    <height>0</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Nom du produit</string>
+                 </property>
+                 <property name="statusTip">
+                  <string/>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Entrez un nom</string>
+                 </property>
                 </widget>
                </item>
                <item row="1" column="0">
@@ -185,6 +213,9 @@
                    <width>200</width>
                    <height>0</height>
                   </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Selectionnez un rayon où mettre le produit</string>
                  </property>
                 </widget>
                </item>
@@ -210,6 +241,12 @@
                  <property name="enabled">
                   <bool>false</bool>
                  </property>
+                 <property name="toolTip">
+                  <string>Ajout un nouveau produit</string>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>-1</number>
+                 </property>
                  <property name="text">
                   <string>&amp;Ajouter</string>
                  </property>
@@ -223,6 +260,9 @@
                 <widget class="QPushButton" name="pushButtonProduitsModifier">
                  <property name="enabled">
                   <bool>false</bool>
+                 </property>
+                 <property name="toolTip">
+                  <string>Modifier un produit existant</string>
                  </property>
                  <property name="text">
                   <string>&amp;Modifier</string>
@@ -238,6 +278,9 @@
                  <property name="enabled">
                   <bool>false</bool>
                  </property>
+                 <property name="toolTip">
+                  <string>Supprimer un produit</string>
+                 </property>
                  <property name="text">
                   <string>&amp;Supprimer</string>
                  </property>
@@ -251,6 +294,9 @@
                 <widget class="QPushButton" name="pushButtonProduitsAnnuler">
                  <property name="enabled">
                   <bool>false</bool>
+                 </property>
+                 <property name="toolTip">
+                  <string>Annuler la selection et la saisie</string>
                  </property>
                  <property name="text">
                   <string>&amp;Annuler</string>
@@ -274,6 +320,9 @@
        <attribute name="title">
         <string>Rayons</string>
        </attribute>
+       <attribute name="toolTip">
+        <string>Gestion des rayons</string>
+       </attribute>
        <layout class="QGridLayout" name="gridLayout_8">
         <item row="0" column="0">
          <widget class="QGroupBox" name="groupBoxListeRayons">
@@ -288,6 +337,9 @@
                <width>250</width>
                <height>250</height>
               </size>
+             </property>
+             <property name="toolTip">
+              <string>Rayons</string>
              </property>
              <property name="alternatingRowColors">
               <bool>true</bool>
@@ -335,6 +387,12 @@
                    <height>0</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Nom du rayon</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Entrez un nom</string>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -359,6 +417,9 @@
                  <property name="enabled">
                   <bool>false</bool>
                  </property>
+                 <property name="toolTip">
+                  <string>Ajouter un nouveau produit</string>
+                 </property>
                  <property name="text">
                   <string>&amp;Ajouter</string>
                  </property>
@@ -373,6 +434,9 @@
                  <property name="enabled">
                   <bool>false</bool>
                  </property>
+                 <property name="toolTip">
+                  <string>Modifier un produit existant</string>
+                 </property>
                  <property name="text">
                   <string>&amp;Modifier</string>
                  </property>
@@ -386,6 +450,9 @@
                 <widget class="QPushButton" name="pushButtonRayonsSupprimer">
                  <property name="enabled">
                   <bool>false</bool>
+                 </property>
+                 <property name="toolTip">
+                  <string>Supprimer un produit</string>
                  </property>
                  <property name="text">
                   <string>&amp;Supprimer</string>
@@ -403,6 +470,9 @@
                 <widget class="QPushButton" name="pushButtonRayonsAnnuler">
                  <property name="enabled">
                   <bool>false</bool>
+                 </property>
+                 <property name="toolTip">
+                  <string>Annuler la selection et la saisie</string>
                  </property>
                  <property name="text">
                   <string>&amp;Annuler</string>
