@@ -28,7 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
         //charge les pages
         this->chargePageProduits();
         this->chargePageRayons();
-        ui->tabProduits->setFocus();
+        //selectionne la page des produits automatiquement
+        ui->tabWidget->setCurrentIndex(0);
     }
     else // sinon on affiche un message d'erreur
     {
@@ -341,6 +342,11 @@ void MainWindow::chargerListWidgetProduits(){
         if(req.value(2).toString()!=rayon) // si on change de rayon
         {
             item=new QListWidgetItem(req.value(2).toString());
+            item->setBackground(Qt::gray);//change le fond en gris (ligne du rayon)
+            item->setTextColor(Qt::white);//change la couleur en blanc (ligne du rayon)
+            item->setTextAlignment(Qt::AlignCenter);//centre le rayon au milieu de la listwidget
+            item->setFlags(Qt::ItemIsEnabled);//empéche le clique sur le rayon
+            item->setToolTip("Rayon");//définie le tooltip si rayon
             vectorPositionInListOfRayon.push_back(i);
             vectorRayonsProduits.push_back(req.value(2).toString());
             ui->listWidgetProduits->addItem(item);
@@ -348,13 +354,15 @@ void MainWindow::chargerListWidgetProduits(){
             i++;
         }
         item=new QListWidgetItem(req.value(1).toString());
+        item->setToolTip("Produit");//définie le tooltip si produit
         vectorRayonsProduits.push_back(req.value(0).toString());
         ui->listWidgetProduits->addItem(item);
         i++;
     }
     if(i==0)
     {
-        ui->listWidgetProduits->addItem("Aucun produit");
+        ui->listWidgetProduits->addItem("Aucun produit trouvé");
+
     }
 }
 
