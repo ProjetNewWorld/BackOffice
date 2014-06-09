@@ -20,3 +20,8 @@ Dépendances
 - QtCreator 5.2
 - MySql
  - Base de données ``listedescourses``
+
+Screen Shot
+-----------
+![page produits](http://nicolas.capiaumont.port-folio.fr/documents/courses/BackOfficeLDC-Produits.png "Page de gestion des produits")
+![page rayons](http://nicolas.capiaumont.port-folio.fr/documents/courses/BackOfficeLDC-Rayons.png "Page de gestion des rayons")
